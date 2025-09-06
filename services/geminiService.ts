@@ -72,25 +72,32 @@ export const generateInitialViews = async (image: ImageFile): Promise<[string, s
   return [sideView, backView, fullView];
 };
 
-export const editImage = async (image: string, prompt: string): Promise<string> => {
+export const editImage = async (image: string, prompt: string, mask: string | null = null): Promise<string> => {
     const { mimeType, data } = parseBase64(image);
     const imagePart: Part = {
-        inlineData: {
-            mimeType,
-            data,
-        }
+        inlineData: { mimeType, data }
     };
 
-    const fullPrompt = `Edit the image based on this instruction: "${prompt}". Return only the modified image with a transparent background. Do not include any text in your response.`;
+    const parts: Part[] = [imagePart];
+    let fullPrompt: string;
 
-    // Fix: Use gemini-2.5-flash-image-preview for image editing, per guidelines.
+    if (mask) {
+        const { mimeType: maskMimeType, data: maskData } = parseBase64(mask);
+        const maskPart: Part = {
+            inlineData: { mimeType: maskMimeType, data: maskData }
+        };
+        parts.push(maskPart);
+        fullPrompt = `Using the provided mask (the white area), edit the image based on this instruction: "${prompt}". Return only the modified image with a transparent background. Do not add text.`;
+    } else {
+        fullPrompt = `Edit the entire image based on this instruction: "${prompt}". Return only the modified image with a transparent background. Do not add text.`;
+    }
+    
+    parts.push({ text: fullPrompt });
+
     const response: GenerateContentResponse = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image-preview',
-        contents: {
-            parts: [imagePart, { text: fullPrompt }],
-        },
+        contents: { parts },
         config: {
-            // Fix: Per documentation, must include both Modality.IMAGE and Modality.TEXT for this model.
             responseModalities: [Modality.IMAGE, Modality.TEXT],
         },
     });
@@ -106,4 +113,45 @@ export const editImage = async (image: string, prompt: string): Promise<string> 
     }
     
     return `data:${imagePartResponse.inlineData.mimeType};base64,${imagePartResponse.inlineData.data}`;
+};
+
+export const generateVideo = async (baseImage: string): Promise<string> => {
+  const { mimeType, data } = parseBase64(baseImage);
+
+  const prompt = "Create a 360-degree turntable animation of this character. The character should be in a neutral A-pose. The background should be a simple, neutral gray studio background. The animation should be a smooth, seamless loop.";
+
+  let operation = await ai.models.generateVideos({
+    model: 'veo-2.0-generate-001',
+    prompt: prompt,
+    image: {
+      imageBytes: data,
+      mimeType: mimeType,
+    },
+    config: {
+      numberOfVideos: 1
+    }
+  });
+
+  // Poll for the result every 10 seconds
+  while (!operation.done) {
+    await new Promise(resolve => setTimeout(resolve, 10000));
+    operation = await ai.operations.getVideosOperation({operation: operation});
+  }
+
+  const downloadLink = operation.response?.generatedVideos?.[0]?.video?.uri;
+
+  if (!downloadLink) {
+    throw new Error('Video generation failed: no download link found.');
+  }
+
+  // Fetch the video data using the API key
+  const videoResponse = await fetch(`${downloadLink}&key=${process.env.API_KEY}`);
+  if (!videoResponse.ok) {
+    throw new Error(`Failed to download video: ${videoResponse.statusText}`);
+  }
+
+  const videoBlob = await videoResponse.blob();
+  const videoUrl = URL.createObjectURL(videoBlob);
+
+  return videoUrl;
 };

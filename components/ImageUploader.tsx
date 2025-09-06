@@ -38,15 +38,15 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload, dis
   }, [onImageUpload]);
 
   return (
-    <div className="bg-gray-700/50 p-6 rounded-lg border border-dashed border-gray-600">
+    <div className="bg-gray-700/50 p-4 sm:p-6 rounded-lg border border-dashed border-gray-600">
       <h3 className="text-lg font-medium text-white mb-4">1. Uploader une Image</h3>
       <label
         htmlFor="file-upload"
         className={`relative flex flex-col items-center justify-center w-full h-32 rounded-lg cursor-pointer bg-gray-700 hover:bg-gray-600 transition-colors duration-200 ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
-        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+        <div className="flex flex-col items-center justify-center pt-5 pb-6 text-center">
           <UploadIcon className="w-8 h-8 mb-2 text-gray-400" />
-          <p className="mb-2 text-sm text-gray-400"><span className="font-semibold">Cliquez pour uploader</span> ou glissez-déposez</p>
+          <p className="mb-2 text-xs sm:text-sm text-gray-400"><span className="font-semibold">Cliquez pour uploader</span><br className="sm:hidden" /> ou glissez-déposez</p>
           <p className="text-xs text-gray-500">JPG ou PNG</p>
         </div>
         <input 

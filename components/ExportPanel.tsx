@@ -9,6 +9,13 @@ interface ExportPanelProps {
   disabled: boolean;
 }
 
+const viewNameMapping: Record<keyof ImageViews, string> = {
+  front: 'de face',
+  side: 'de profil',
+  back: 'de dos',
+  full: 'complète'
+};
+
 export const ExportPanel: React.FC<ExportPanelProps> = ({ imageViews, disabled }) => {
   const handleDownload = (image: string | null, viewName: string) => {
     if (!image) return;
@@ -32,7 +39,7 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ imageViews, disabled }
   const isAnyImageReady = Object.values(imageViews).some(img => img !== null);
 
   return (
-    <div className="bg-gray-700/50 p-6 rounded-lg border border-gray-600">
+    <div className="bg-gray-700/50 p-4 sm:p-6 rounded-lg border border-gray-600">
       <h3 className="text-lg font-medium text-white mb-4">3. Exporter</h3>
       <div className="space-y-3">
         {(Object.keys(imageViews) as Array<keyof ImageViews>).map((viewName) => {
@@ -44,7 +51,7 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ imageViews, disabled }
               disabled={!image || disabled}
               className="w-full flex items-center justify-between bg-gray-700 text-white font-medium py-2 px-4 rounded-md hover:bg-gray-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span>Télécharger la vue de {viewName}</span>
+              <span>Télécharger la vue {viewNameMapping[viewName]}</span>
               <DownloadIcon className="w-5 h-5" />
             </button>
           )
