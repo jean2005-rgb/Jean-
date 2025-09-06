@@ -1,13 +1,14 @@
+
 // Fix: Provide full implementation for the Sidebar component, which was previously empty.
 import React from 'react';
-import type { ImageFile, ImageViews } from '../types';
-import { AppStatus } from '../types';
-import { ImageUploader } from './ImageUploader';
-import { CustomizationPanel } from './CustomizationPanel';
-import { ExportPanel } from './ExportPanel';
-import { VideoPanel } from './VideoPanel';
-import { ResetIcon } from './icons/ResetIcon';
-import { CubeIcon } from './icons/CubeIcon';
+import type { ImageFile, ImageViews } from '../types.ts';
+import { AppStatus } from '../types.ts';
+import { ImageUploader } from './ImageUploader.tsx';
+import { CustomizationPanel } from './CustomizationPanel.tsx';
+import { ExportPanel } from './ExportPanel.tsx';
+import { VideoPanel } from './VideoPanel.tsx';
+import { ResetIcon } from './icons/ResetIcon.tsx';
+import { CubeIcon } from './icons/CubeIcon.tsx';
 
 interface SidebarProps {
   onImageUpload: (imageFile: ImageFile) => void;

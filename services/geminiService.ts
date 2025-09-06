@@ -1,6 +1,7 @@
+
 // Fix: Provide full implementation for the Gemini service, which was previously empty.
 import { GoogleGenAI, GenerateContentResponse, Part, Modality } from "@google/genai";
-import type { ImageFile } from '../types';
+import type { ImageFile } from '../types.ts';
 
 // Fix: Correctly initialize GoogleGenAI with the apiKey in an object as required by the SDK.
 // Use `process.env.API_KEY` directly as it's expected to be set in the environment.

@@ -1,8 +1,9 @@
+
 import React, { useState, useRef, MouseEvent, WheelEvent, useEffect } from 'react';
-import type { ImageViews, ViewType } from '../types';
-import { AppStatus } from '../types';
-import { Loader } from './Loader';
-import { PhotoIcon } from './icons/PhotoIcon';
+import type { ImageViews, ViewType } from '../types.ts';
+import { AppStatus } from '../types.ts';
+import { Loader } from './Loader.tsx';
+import { PhotoIcon } from './icons/PhotoIcon.tsx';
 
 interface ViewerProps {
   imageViews: ImageViews;

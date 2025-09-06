@@ -1,8 +1,9 @@
+
 // Fix: Provide full implementation for the CustomizationPanel component, which was previously empty.
 import React, { useState } from 'react';
-import { WandIcon } from './icons/WandIcon';
-import { BrushIcon } from './icons/BrushIcon';
-import { EraserIcon } from './icons/EraserIcon';
+import { WandIcon } from './icons/WandIcon.tsx';
+import { BrushIcon } from './icons/BrushIcon.tsx';
+import { EraserIcon } from './icons/EraserIcon.tsx';
 
 interface CustomizationPanelProps {
   onApplyEdit: (prompt: string) => void;

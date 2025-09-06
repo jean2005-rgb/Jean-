@@ -1,8 +1,9 @@
 
+
 // Fix: Provide full implementation for the ExportPanel component, which was previously empty.
 import React from 'react';
-import type { ImageViews } from '../types';
-import { DownloadIcon } from './icons/DownloadIcon';
+import type { ImageViews } from '../types.ts';
+import { DownloadIcon } from './icons/DownloadIcon.tsx';
 
 interface ExportPanelProps {
   imageViews: ImageViews;

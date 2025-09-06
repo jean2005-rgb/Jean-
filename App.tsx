@@ -1,10 +1,11 @@
+
 // Fix: Provide full implementation for the main App component, which was previously empty.
 import React, { useState, useCallback } from 'react';
-import { Sidebar } from './components/Sidebar';
-import { Viewer } from './components/Viewer';
-import type { ImageFile, ImageViews, ViewType } from './types';
-import { AppStatus } from './types';
-import { generateInitialViews, editImage, generateVideo } from './services/geminiService';
+import { Sidebar } from './components/Sidebar.tsx';
+import { Viewer } from './components/Viewer.tsx';
+import type { ImageFile, ImageViews, ViewType } from './types.ts';
+import { AppStatus } from './types.ts';
+import { generateInitialViews, editImage, generateVideo } from './services/geminiService.ts';
 
 const initialImageViews: ImageViews = {
   front: null,
@@ -18,14 +19,28 @@ const App: React.FC = () => {
   if (!process.env.API_KEY) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-900 text-white font-sans">
-        <div className="text-center p-8 bg-gray-800 rounded-lg shadow-xl border border-red-500 max-w-md mx-4">
-          <h1 className="text-2xl font-bold text-red-400 mb-4">Erreur de Configuration</h1>
-          <p className="text-gray-300">
-            La clé API de Google Gemini n'est pas configurée.
+        <div className="text-center p-8 bg-gray-800 rounded-lg shadow-xl border border-yellow-500 max-w-2xl mx-4">
+          <h1 className="text-2xl font-bold text-yellow-400 mb-4">Action Requise : Configuration de la Clé API</h1>
+          <p className="text-gray-300 text-left mb-4">
+            Pour que l'application puisse communiquer avec l'IA de Google, une clé API est nécessaire. Pour des raisons de sécurité, cette clé ne doit pas être inscrite directement dans le code.
           </p>
-          <p className="text-gray-400 mt-2 text-sm">
-            Pour que cette application fonctionne, veuillez définir la variable d'environnement <code className="bg-gray-700 px-2 py-1 rounded text-yellow-300">API_KEY</code> dans les paramètres de votre projet sur Vercel.
+          <p className="text-gray-300 text-left mb-4">
+            Elle doit être fournie via une variable d'environnement nommée <code className="bg-gray-700 px-2 py-1 rounded text-yellow-300">API_KEY</code>.
           </p>
+          <div className="text-left mt-6 bg-gray-900/50 p-4 rounded-md border border-gray-700">
+            <h2 className="font-semibold text-lg mb-2 text-white">Comment configurer la clé :</h2>
+            <ul className="list-disc list-inside space-y-2 text-gray-400 text-sm">
+                <li>
+                    <strong>Si vous déployez sur une plateforme (Vercel, Netlify...) :</strong><br/>
+                    Allez dans les paramètres de votre projet et ajoutez une variable d'environnement. Nommez-la <code className="bg-gray-700 px-1 py-0.5 rounded text-yellow-300">API_KEY</code> et collez-y votre clé.
+                </li>
+                <li>
+                    <strong>Si vous exécutez le projet localement :</strong><br/>
+                     Vous devez démarrer votre serveur de développement avec la variable d'environnement. Par exemple, dans votre terminal :<br/>
+                     <code className="block bg-gray-700 mt-1 p-2 rounded text-yellow-300 text-xs">API_KEY=VOTRE_CLE_ICI npm run dev</code>
+                </li>
+            </ul>
+          </div>
         </div>
       </div>
     );

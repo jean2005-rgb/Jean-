@@ -1,7 +1,8 @@
+
 import React from 'react';
-import { AppStatus } from '../types';
-import { VideoIcon } from './icons/VideoIcon';
-import { Loader } from './Loader';
+import { AppStatus } from '../types.ts';
+import { VideoIcon } from './icons/VideoIcon.tsx';
+import { Loader } from './Loader.tsx';
 
 interface VideoPanelProps {
   onGenerateVideo: () => void;
